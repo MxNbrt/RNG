@@ -9,18 +9,19 @@ namespace RNG
 {
     class Program
     {
+        private static string RandomString = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
         static void Main(string[] args)
         {
-            calcRandoms(1000, 100);
+            calcRandoms(1000);
         }
 
-        private static void calcRandoms(int runs, int max)
+        private static void calcRandoms(int runs)
         {
             List<int> result = new List<int>();
 
             for (int i = 0; i < runs; i++)
             {
-                result.Add(CalcRandom() % max);
+                result.Add(CalcRandom());
             }
         }
 
@@ -29,7 +30,7 @@ namespace RNG
             string filename = "D:\\test.txt";
             Task writeTask = new Task(() =>
             {
-                File.WriteAllText(filename, GetTestString());
+                File.WriteAllText(filename, RandomString);
                 File.Delete(filename);
             });
             Task<int> readTask = new Task<int>(() =>
@@ -47,17 +48,6 @@ namespace RNG
             readTask.Wait();
             writeTask.Wait();
             return readTask.Result;
-        }
-
-        private static string GetTestString()
-        {
-            int rand = new Random().Next(1000, 10000);
-            string result = "";
-            for (int i = 0; i < rand; i++)
-            {
-                result += "x";
-            }
-            return result;
         }
     }
 }
